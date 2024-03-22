@@ -1,0 +1,29 @@
+.modal-background {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    opacity: 0.5;
+    z-index: 10;
+}
+
+.modal-window {
+    position: absolute;
+    min-width: 200px;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    z-index: 11;
+    border: 1px solid lightgray;
+}
+
+.modal-window__header {
+    height: 40px;
+    background: lightgray;
+    padding: 0 10px;
+}
+
+.modal-window__body {
+    padding: 10px;
+}

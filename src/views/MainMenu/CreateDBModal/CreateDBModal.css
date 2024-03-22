@@ -1,0 +1,4 @@
+.create-db__form {
+    display: flex;
+    flex-direction: column;
+}
