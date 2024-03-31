@@ -19,7 +19,6 @@ function AppRouter() {
     <Routes>
       <Route path="DB-Maker/" element={<MainMenuView mainMenuViewModel={mainMenuViewModel}/>}/>
       <Route path="DB-Maker/editor/:currentDbId" element={<EditorView editorViewModel={useEditorViewModel(dbModel)}/>}>
-        {/*<Route path="table/:tableId/:tab" />*/}
         <Route path="table/:tableId" element={
           <EditTableModalContext.Consumer>{
             props => <EditTableModal props={{
