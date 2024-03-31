@@ -46,7 +46,7 @@ function MainMenuView({mainMenuViewModel}: MainMenuViewProps) {
                 {
                   dbs.map((db) => {
                     return (
-                      <tr onClick={() => navigate(`DB-Maker/editor/${db.id}`)}>
+                      <tr onClick={() => navigate(`editor/${db.id}`)}>
                         <td className="recent-db__name">{db.name}</td>
                         <td className="recent-db__type">{db.type}</td>
                         <td className="recent-db__create-date">{db?.createDate?.toString()}</td>
