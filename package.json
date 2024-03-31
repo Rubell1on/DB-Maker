@@ -1,7 +1,8 @@
 {
   "name": "db_maker",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "private": true,
+  "homepage": "https://rubell1on.github.io/DB-Maker",
   "dependencies": {
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
@@ -22,7 +23,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [
@@ -43,6 +45,7 @@
     ]
   },
   "devDependencies": {
-    "@types/wicg-file-system-access": "^2023.10.5"
+    "@types/wicg-file-system-access": "^2023.10.5",
+    "gh-pages": "^6.1.1"
   }
 }
