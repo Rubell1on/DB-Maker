@@ -1,11 +1,7 @@
 import './MainMenu.style.css'
-import ModalWindow from "../../components/ModalWindow/ModalWindow";
-import useMainMenuViewModel from "../../viewmodels/MainMenu/MainMenuViewModel";
 import CreateDBModal from "./CreateDBModal/CreateDBModal";
-import {DB} from "../../models/db/db.types";
 import {MainMenuViewProps} from "./MainMenuView.types";
-import {NavLink, useNavigate} from "react-router-dom";
-import table from "../../components/table/Table";
+import {useNavigate} from "react-router-dom";
 import Button from "../../components/Base/Button/Button";
 
 

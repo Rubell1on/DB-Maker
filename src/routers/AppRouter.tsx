@@ -1,14 +1,12 @@
 import useDBModel from "../models/db/db.model";
 import useMainMenuViewModel from "../viewmodels/MainMenu/MainMenuViewModel";
 import useEditorViewModel from "../viewmodels/Editor/EditorViewModel";
-import {Route, Routes, useParams} from "react-router-dom";
+import {Route, Routes} from "react-router-dom";
 import MainMenuView from "../views/MainMenu/MainMenuView";
-import EditorView, {DbContext, EditTableModalContext} from "../views/Editor/EditorView";
+import EditorView, {EditTableModalContext} from "../views/Editor/EditorView";
 import {EditTableModalTabContext} from "../views/Editor/EditTableModal/EditTableModal";
-import React, {useContext, useEffect, useState} from "react";
+import React from "react";
 import EditTableModal from "../views/Editor/EditTableModal/EditTableModal";
-import {Vector2} from "../shared/Vector2";
-import {Table} from "../models/db/db.types";
 import TableMainInfoTab from "../views/Editor/EditTableModal/Tabs/TableMainInfo.tab";
 import TableColumnsTab from "../views/Editor/EditTableModal/Tabs/TableColumns.tab";
 import TableRelationsTab from "../views/Editor/EditTableModal/Tabs/TableRelationsTab";

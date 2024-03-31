@@ -1,6 +1,5 @@
 import './ModalWindow.css'
 import Header from "../Base/Header/Header";
-import { CSSProperties } from 'react';
 
 interface ModalWindowProps {
   title?: string;

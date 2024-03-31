@@ -1,23 +1,12 @@
 import Label from "../../../../components/Base/Label/Label";
 import Input from "../../../../components/Base/Input/Input";
-import {Table} from "../../../../models/db/db.types";
-import {ChangeEventHandler, useContext} from "react";
-import {EditTableModalTabContext} from "../EditTableModal";
 import useEditTableViewModel from "../../../../viewmodels/Editor/EditTableViewModel";
 
 interface MainInfoTabProps {
-  // table?: Table;
-  // onChange?: ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
   editTableViewModel: ReturnType<typeof useEditTableViewModel>
 }
 
 function TableMainInfoTab({editTableViewModel}: MainInfoTabProps) {
-  // const context = useContext(EditTableModalContext)!;
-  //
-  // const {
-  //   editTableViewModel
-  // } = context;
-
   const {table, onUpdateTableField} = editTableViewModel;
 
   return (

@@ -9,10 +9,6 @@ function useDBModel() {
     getFromLocalStorage();
   },[dbs.length])
 
-  function getDb(id: string) {
-    return dbs.find(({id: dbId}) => dbId === id);
-  }
-
   function createDb(args: Omit<DB, 'id'>) {
     const db: DB = {
       id: uuid(),

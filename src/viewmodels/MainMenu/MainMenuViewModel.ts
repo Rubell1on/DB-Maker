@@ -1,6 +1,5 @@
 import useDBModel from "../../models/db/db.model";
-import {FormEvent, FormEventHandler, MouseEventHandler, useEffect, useState, MouseEvent} from "react";
-import {DB} from "../../models/db/db.types";
+import {useState, MouseEvent} from "react";
 import {DbSubmitEventArgs} from "./MainMenuViewModel.types";
 import {useNavigate} from "react-router-dom";
 
@@ -12,11 +11,8 @@ function useMainMenuViewModel(dbModel: ReturnType<typeof useDBModel>) {
   const {
     dbs,
     createDb,
-    updateDb,
     deleteDb
   } = dbModel;
-
-
 
   function onCreateDbOpen() {
     setCreateDbWindow(true)

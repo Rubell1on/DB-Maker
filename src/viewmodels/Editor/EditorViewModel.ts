@@ -1,10 +1,8 @@
-import {UseEditorViewModelArgs} from "./EditorViewModel.types";
 import {Table as TableDTO, Table} from "../../models/db/db.types";
 import uuid from "react-uuid";
 import {Vector2} from "../../shared/Vector2";
 import {MouseEvent, useEffect, useState} from "react";
 import {DB} from "../../models/db/db.types";
-import table from "../../components/table/Table";
 import useDBModel from "../../models/db/db.model";
 import useMouseDrag from "../../hooks/useMouseDrag";
 import {useNavigate} from "react-router-dom";
@@ -62,7 +60,7 @@ function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
   }
 
   function onEditTableClick(tableId: string) {
-    return (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => {
+    return () => {
       setSelectedTables(currentDb!.tables.filter(({id}) => id === tableId))
       setEditingTable(true);
     }

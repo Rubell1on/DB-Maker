@@ -3,7 +3,6 @@ import {ChangeEvent, useState} from "react";
 import './CreateDBModal.css'
 import {DB, DBType} from "../../../models/db/db.types";
 import {DbSubmitEventArgs} from "../../../viewmodels/MainMenu/MainMenuViewModel.types";
-import useMainMenuViewModel from "../../../viewmodels/MainMenu/MainMenuViewModel";
 import Input from "../../../components/Base/Input/Input";
 import Label from "../../../components/Base/Label/Label";
 import Select from "../../../components/Base/Select/Select";

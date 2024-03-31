@@ -1,7 +1,6 @@
 import './Table.css'
 import {Table as TableDTO} from "../../models/db/db.types";
-import {MouseEvent, useState} from "react";
-import {Vector2} from "../../shared/Vector2";
+import {MouseEvent} from "react";
 import {Props as _Props} from "../../shared/Props";
 
 type TableProps = _Props<TableDTO> & {
