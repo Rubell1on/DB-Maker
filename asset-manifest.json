@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/DB-Maker/static/css/main.6f605fec.css",
-    "main.js": "/DB-Maker/static/js/main.dcab4efc.js",
+    "main.js": "/DB-Maker/static/js/main.139edb7c.js",
     "static/media/Rubik-Regular.ttf": "/DB-Maker/static/media/Rubik-Regular.55fa11cdc8b9a3ee842f.ttf",
     "index.html": "/DB-Maker/index.html",
     "main.6f605fec.css.map": "/DB-Maker/static/css/main.6f605fec.css.map",
-    "main.dcab4efc.js.map": "/DB-Maker/static/js/main.dcab4efc.js.map"
+    "main.139edb7c.js.map": "/DB-Maker/static/js/main.139edb7c.js.map"
   },
   "entrypoints": [
     "static/css/main.6f605fec.css",
-    "static/js/main.dcab4efc.js"
+    "static/js/main.139edb7c.js"
   ]
 }
