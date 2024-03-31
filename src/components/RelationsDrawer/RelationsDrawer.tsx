@@ -1,5 +1,5 @@
 import {useContext, useEffect} from "react";
-import {DbContext} from "../../views/Editor/Editor";
+import {DbContext} from "../../views/Editor/EditorView";
 import {Vector2} from "../../shared/Vector2";
 
 function RelationsDrawer() {
@@ -14,25 +14,32 @@ function RelationsDrawer() {
         const td = db?.tables?.reduce((tablesAcc, table) => {
             let tData: {
                 selfPos: Vector2,
-                cols: Map<number, {
-                    refTableId: number | null,
-                    refColumnId: number | null,
+                cols: Map<string, {
+                    refTableId: string | null,
+                    refColumnId: string | null,
                     colInd: number,
                 }>
-            } | null = null;
+            } = {
+                selfPos: table.position,
+                cols: new Map<string, {
+                    refTableId: string | null,
+                    refColumnId: string | null,
+                    colInd: number,
+                }>()
+            };
 
-            table.columns.reduce((colsMap, col, i) => {
+            table.relations.reduce((colsMap, col, i) => {
                 const colData = {
                     colInd: i,
-                    refTableId: col?.relation?.referenceTableId || null,
-                    refColumnId: col?.relation?.referenceColumnId || null
+                    refTableId: col?.referenceTableId || null,
+                    refColumnId: col?.referenceColumnId || null
                 };
 
                 if (!tData) {
-                    const cols = new Map<number, {
+                    const cols = new Map<string, {
                         colInd: number,
-                        refTableId: number | null,
-                        refColumnId: number | null
+                        refTableId: string | null,
+                        refColumnId: string | null
                     }>();
 
                     tData = {
@@ -44,29 +51,29 @@ function RelationsDrawer() {
                 tData.cols.set(col.id, colData);
 
                 return colsMap;
-            }, new Map<number, {
-                refTableId: number | null,
-                refColumnId: number | null,
+            }, new Map<string, {
+                refTableId: string | null,
+                refColumnId: string | null,
                 colInd: number,
             }>());
 
-            if (tData) {
-                tablesAcc.set(table.id, tData);
-            }
+            // if (tData) {
+            tablesAcc.set(table.id, tData);
+            // }
 
             return tablesAcc;
-        }, new Map<number, {
+        }, new Map<string, {
             selfPos: Vector2,
-            cols: Map<number, {
-                refTableId: number | null,
-                refColumnId: number | null,
+            cols: Map<string, {
+                refTableId: string | null,
+                refColumnId: string | null,
                 colInd: number,
             }>
         }>())
 
         console.log(td);
 
-        if (td.size === 0) {
+        if (!td?.size) {
             return;
         }
 
@@ -74,7 +81,7 @@ function RelationsDrawer() {
 
         for (let [, tData] of td) {
             for (let [, cData] of tData.cols) {
-                if (!cData?.refTableId || !cData?.refColumnId) {
+                if (!cData?.refTableId?.length || !cData?.refColumnId?.length) {
                     continue;
                 }
 

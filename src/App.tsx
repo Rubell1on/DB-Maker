@@ -1,18 +1,16 @@
 import React from 'react';
 import './App.css'
-import Editor from "./views/Editor/Editor";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
-import MainMenu from "./views/MainMenu/MainMenu";
+import {BrowserRouter} from "react-router-dom";
+import AppRouter from './routers/AppRouter';
+import './fonts/Rubik-Regular.ttf'
 
 function App() {
+
   return (
     <div className="app">
-        <BrowserRouter>
-            <Routes>
-                <Route path='/' element={<MainMenu />}/>
-                <Route path='/editor' element={<Editor />} />
-            </Routes>
-        </BrowserRouter>
+      <BrowserRouter>
+        <AppRouter/>
+      </BrowserRouter>
 
     </div>
   );

@@ -9,19 +9,19 @@ export interface DB {
     name: string;
     type: DBType;
     createDate: Date;
-    tables: Table[]
-    // relations: Relation[]
-    // associatedWith: {
-    //     tableId: string;
-    //     columnId: string;
-    // }[]
+    tables: Table[];
 }
 
 export interface Table {
-    id: number;
+    id: string;
     name: string;
     position: Vector2
-    columns: Column[]
+    columns: Column[];
+    relations: Relation[];
+    associatedWith: {
+        tableId: string;
+        columnId: string;
+    }[];
 }
 
 export enum ColumnType {
@@ -31,7 +31,7 @@ export enum ColumnType {
 }
 
 export interface Column {
-    id: number;
+    id: string;
     name: string;
     type: ColumnType;
     isPrimaryKey: boolean;
@@ -45,8 +45,10 @@ export enum RelationType {
 }
 
 export interface Relation {
+    id: string;
     foreignKeyName: string;
+    columnId: string;
     type: RelationType;
-    referenceTableId: number | null;
-    referenceColumnId: number | null;
+    referenceTableId: string;
+    referenceColumnId: string;
 }

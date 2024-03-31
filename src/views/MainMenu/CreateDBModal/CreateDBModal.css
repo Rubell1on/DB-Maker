@@ -1,4 +1,16 @@
 .create-db__form {
     display: flex;
     flex-direction: column;
+    padding: 10px;
+}
+
+.create-db__form > .custom-input, .create-db__form > .custom-select {
+    margin-bottom: 10px;
+}
+
+.create-db__controls {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    gap: 5px;
 }

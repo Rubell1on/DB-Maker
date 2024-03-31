@@ -1,4 +1,48 @@
+.table-editor__wrapper {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
 
+.wrapper__navigation {
+    display: flex;
+    flex-direction: row;
+}
+
+.navigation__links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding-right: 10px;
+}
+
+.navigation__link {
+    padding: 5px 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    color: black;
+}
+
+.navigation__link.active {
+    background: slategray;
+    color: white;
+}
+
+.navigation__body {
+    display: flex;
+    flex-direction: column;
+    padding-left: 10px;
+    min-width: 300px;
+    min-height: 300px;
+    overflow: auto;
+}
+
+.wrapper__controls {
+    margin-top: 10px;
+    display: flex;
+    gap: 5px;
+    justify-content: flex-end;
+}
 
 .table-editor__columns {
     margin: 10px 0;

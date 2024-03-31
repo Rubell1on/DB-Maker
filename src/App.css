@@ -22,3 +22,12 @@ h4 {
 h3 {
     margin-bottom: 15px;
 }
+
+@font-face {
+    font-family: "Rubik-Regular";
+    src: local('Rubik-Regular'), url("./fonts/Rubik-Regular.ttf");
+}
+
+* {
+    font-family: Rubik-Regular;
+}

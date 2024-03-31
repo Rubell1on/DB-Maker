@@ -1,0 +1,13 @@
+.custom-button {
+    height: 28px;
+    border-radius: 5px;
+    border: 0;
+    font-weight: bold;
+    padding: 0px 15px;
+    cursor: pointer;
+}
+
+.custom-button__submit {
+    background: cornflowerblue;
+    color: white;
+}

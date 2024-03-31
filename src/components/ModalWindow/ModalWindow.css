@@ -16,14 +16,40 @@
     background: white;
     z-index: 11;
     border: 1px solid lightgray;
+    border-radius: 7px;
+    overflow: hidden;
 }
 
 .modal-window__header {
-    height: 40px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
     background: lightgray;
-    padding: 0 10px;
+    padding: 10px 10px;
+    gap: 20px
 }
 
-.modal-window__body {
-    padding: 10px;
+.header__close {
+    width: 30px;
+    height: 30px;
+    margin: 0px;
+    padding: 0px;
+    border: 0;
+    border-radius: 5px;
+    background: none;
+}
+
+.header__close:hover {
+    background: #f0f0f0;
+}
+
+.header__close > .header__close-cross {
+    transform: rotate(45deg);
+    line-height: 30px;
+    font-size: 20px;
+    font-weight: bold;
+    width: 32px;
+    height: 30px;
+    cursor: pointer;
 }
