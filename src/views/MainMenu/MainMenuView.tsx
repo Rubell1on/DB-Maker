@@ -26,8 +26,8 @@ function MainMenuView({mainMenuViewModel}: MainMenuViewProps) {
       <div className="main-menu">
         <h2 className="main-menu__header">Главное меню</h2>
         <div className="main-menu__controls">
-          <button onClick={onCreateDbOpen}>Создать БД</button>
-          <button>Открыть существующую БД</button>
+          <Button onClick={onCreateDbOpen} value="Создать БД" />
+          <Button onClick={onCreateDbOpen} value="Открыть существующую БД" />
         </div>
         <div className="main-menu__recent">
           <h3>Прошлые проекты</h3>

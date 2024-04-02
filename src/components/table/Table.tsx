@@ -24,8 +24,6 @@ function Table({
       className="table"
       style={{transform: `translate(${props.position.x}px, ${props.position.y}px)`}}
       onMouseDown={headerMouseEvents.onMouseDown}
-      onMouseUp={headerMouseEvents.onMouseUp}
-      onMouseMove={headerMouseEvents.onMouseMove}
     >
       <div className="table__header">
         <div className="header__name">{props.name}</div>

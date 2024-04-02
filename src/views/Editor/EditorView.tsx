@@ -47,7 +47,7 @@ function EditorView({editorViewModel}: EditorViewArgs) {
           <button className="controls__save-db" onClick={onSaveDb}>Сохранить как</button>
           <button className="controls__add-table" onClick={createTable}>Добавить таблицу</button>
         </div>
-        <div className="editor__space">
+        <div className="editor__space" onMouseUp={tableHeaderMouseEvents.onHeaderMouseUp} onMouseMove={tableHeaderMouseEvents.onHeaderMouseMove}>
           {db?.tables.map(t => <Table
             key={`table_${t.id}`}
             props={t}
