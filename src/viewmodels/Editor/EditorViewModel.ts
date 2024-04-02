@@ -67,7 +67,7 @@ function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
   }
 
   function onCancelTableEdit() {
-    navigate(`editor/${currentDbId}`)
+    navigate(`DB-Maker/editor/${currentDbId}`)
   }
 
   function onUpdateTable(id: string, table: Partial<Omit<Table, 'id'>>) {

@@ -31,7 +31,7 @@ function useMainMenuViewModel(dbModel: ReturnType<typeof useDBModel>) {
     e.preventDefault();
     const db = createDb(data);
     setCurrentDbId(db.id);
-    navigate(`editor/${db.id}`)
+    navigate(`DB-Maker/editor/${db.id}`)
   }
 
   function onDeleteDB(e: MouseEvent<HTMLElement>, dbId: string) {
