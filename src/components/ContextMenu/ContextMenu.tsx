@@ -1,5 +1,5 @@
 import './ContextMenu.style.css';
-import {MouseEvent, useEffect, useState} from "react";
+import {MouseEvent, /*useEffect,*/ useState} from "react";
 import {Vector2} from "../../shared/Vector2";
 import {ContextMenuItemProps} from "./ItemVariants/ContextMenuItem/ContextMenuItem.types";
 import createContextMenuItem from "./ItemVariants/contextMenuItem.factory";
@@ -18,24 +18,24 @@ function ContextMenu(props: ContextMenuProps) {
     contextMenuPositionOffset
   } = props;
 
-  useEffect(() => {
-    console.log('ContextMenu.useEffect.enter');
-    const app = document.getElementById('app')!;
+  // useEffect(() => {
+  //   console.log('ContextMenu.useEffect.enter');
+  //   const app = document.getElementById('app')!;
+  //
+  //   app.addEventListener('click', onAppClick);
+  //
+  //   return () => {
+  //     console.log('ContextMenu.useEffect.return');
+  //     app.removeEventListener('click', onAppClick);
+  //   }
+  // }, []);
 
-    app.addEventListener('click', onAppClick);
-
-    return () => {
-      console.log('ContextMenu.useEffect.return');
-      app.removeEventListener('click', onAppClick);
-    }
-  }, []);
-
-  function onAppClick() {
-    console.log('onAppClick')
-    // if (!isOpenned) return;
-
-    setIsOpenned(false);
-  }
+  // function onAppClick() {
+  //   console.log('onAppClick')
+  //   // if (!isOpenned) return;
+  //
+  //   setIsOpenned(false);
+  // }
 
   const [isOpenned, setIsOpenned] = useState(false);
   const [menuPosition, setMenuPosition] = useState(new Vector2());
