@@ -47,11 +47,11 @@ function EditorView({editorViewModel}: EditorViewArgs) {
           <ContextMenu position="fixed" contextItems={[{
             type: 'item',
             name: 'Открыть',
-            onClick: () => {}
+            onClick: onOpenDb
           }, {
             type: 'item',
             name: 'Сохранить как',
-            onClick: () => {}
+            onClick: onSaveDb
           }, {
             type: 'list',
             name: 'Экспорт',
@@ -91,7 +91,7 @@ function EditorView({editorViewModel}: EditorViewArgs) {
           <div className="editor__space" onMouseUp={tableHeaderMouseEvents.onHeaderMouseUp}
                onMouseMove={tableHeaderMouseEvents.onHeaderMouseMove}>
             {db?.tables.map(t =>
-              <ContextMenu contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
+              <ContextMenu position="dynamic" contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
                 type: 'item',
                 name: 'Удалить',
                 onClick: () => deleteTable(t.id)

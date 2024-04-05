@@ -1,5 +1,5 @@
 import './ContextMenu.style.css';
-import {MouseEvent, MouseEventHandler, useEffect, useState} from "react";
+import {MouseEvent, useEffect, useState} from "react";
 import {Vector2} from "../../shared/Vector2";
 import {ContextMenuItemProps} from "./ItemVariants/ContextMenuItem/ContextMenuItem.types";
 import createContextMenuItem from "./ItemVariants/contextMenuItem.factory";
