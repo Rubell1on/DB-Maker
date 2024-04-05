@@ -2,10 +2,11 @@ import './Editor.css'
 import Table from "../../components/table/Table";
 import {DB} from "../../models/db/db.types";
 import {createContext, useEffect} from 'react'
-import RelationsDrawerV2 from "../../components/RelationsDrawer/RelationDrawerV2";
+import RelationsDrawerV2 from "../../components/RelationsDrawer/RelationDrawer";
 import {EditorViewArgs} from "./EditorView.types";
 import {Outlet, useNavigate, useParams} from "react-router-dom";
 import useEditorViewModel from "../../viewmodels/Editor/EditorViewModel";
+import ContextMenu from "../../components/ContextMenu/ContextMenu";
 
 export const DbContext = createContext<DB | null>(null);
 
@@ -43,24 +44,73 @@ function EditorView({editorViewModel}: EditorViewArgs) {
     <DbContext.Provider value={db}>
       <div className="editor">
         <div className="editor__contorls">
-          <button className="controls__open-db" onClick={onOpenDb}>Открыть</button>
-          <button className="controls__save-db" onClick={onSaveDb}>Сохранить как</button>
-          <button className="controls__add-table" onClick={createTable}>Добавить таблицу</button>
+          <ContextMenu position="fixed" contextItems={[{
+            type: 'item',
+            name: 'Открыть',
+            onClick: () => {}
+          }, {
+            type: 'item',
+            name: 'Сохранить как',
+            onClick: () => {}
+          }, {
+            type: 'list',
+            name: 'Экспорт',
+            children: [{
+              type: 'item',
+              name: 'В SQL',
+              onClick: () => {}
+            }]
+          }]}>
+            <div className="controls__file">Файл</div>
+          </ContextMenu>
+          {/*<button className="controls__open-db" onClick={onOpenDb}>Открыть</button>*/}
+          {/*<button className="controls__save-db" onClick={onSaveDb}>Сохранить как</button>*/}
+          {/*<button className="controls__add-table" onClick={createTable}>Добавить таблицу</button>*/}
         </div>
-        <div className="editor__space" onMouseUp={tableHeaderMouseEvents.onHeaderMouseUp} onMouseMove={tableHeaderMouseEvents.onHeaderMouseMove}>
-          {db?.tables.map(t => <Table
-            key={`table_${t.id}`}
-            props={t}
-            onEditTableClick={((id) => () => navigate(`table/${id}/main`))(t.id)}
-            onDelete={() => deleteTable(t.id)}
-            headerMouseEvents={{
-              onMouseDown: tableHeaderMouseEvents.onHeaderMouseDown(t.id),
-              onMouseUp: tableHeaderMouseEvents.onHeaderMouseUp,
-              onMouseMove: tableHeaderMouseEvents.onHeaderMouseMove
-            }}
-          ></Table>)}
-          <RelationsDrawerV2/>
-        </div>
+        <ContextMenu position="dynamic" contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
+          type: 'item',
+          name: 'Создать таблицу',
+          onClick: createTable,
+        }, {
+          type: 'separator'
+        }, {
+          type: 'item',
+          name: 'Добавить заметку',
+          onClick: () => console.log('Заметка создана')
+        }, {
+          type: 'list',
+          name: 'Экспорт',
+          children: [{
+            type: 'item',
+            name: 'Sql'
+          }, {
+            type: 'item',
+            name: 'Png'
+          }]
+        }]}>
+          <div className="editor__space" onMouseUp={tableHeaderMouseEvents.onHeaderMouseUp}
+               onMouseMove={tableHeaderMouseEvents.onHeaderMouseMove}>
+            {db?.tables.map(t =>
+              <ContextMenu contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
+                type: 'item',
+                name: 'Удалить',
+                onClick: () => deleteTable(t.id)
+              }]}>
+                <Table
+                  key={`table_${t.id}`}
+                  props={t}
+                  onEditTableClick={((id) => () => navigate(`table/${id}/main`))(t.id)}
+                  onDelete={() => deleteTable(t.id)}
+                  headerMouseEvents={{
+                    onMouseDown: tableHeaderMouseEvents.onHeaderMouseDown(t.id),
+                    onMouseUp: tableHeaderMouseEvents.onHeaderMouseUp,
+                    onMouseMove: tableHeaderMouseEvents.onHeaderMouseMove
+                  }}
+                />
+              </ContextMenu>)}
+            <RelationsDrawerV2/>
+          </div>
+        </ContextMenu>
         <EditTableModalContext.Provider value={{
           onUpdateTable,
           onCancelTableEdit

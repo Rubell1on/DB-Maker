@@ -47,7 +47,6 @@ function useEditTableViewModel() {
       id: uuid(),
       name: 'Колонка',
       type: ColumnType.Int,
-      // parentTable: table,
       sort: columns.length + 1,
       isPrimaryKey: false,
     }

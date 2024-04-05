@@ -4,10 +4,13 @@
 }
 
 .editor__contorls {
-    display: block;
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
     width: 100%;
-    height: 40px;
+    /*height: 30px;*/
     background: cadetblue;
+    padding: 5px;
 }
 
 .editor__space {

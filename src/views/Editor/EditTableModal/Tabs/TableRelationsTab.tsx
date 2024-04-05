@@ -3,7 +3,7 @@ import Button from "../../../../components/Base/Button/Button";
 import Select from "../../../../components/Base/Select/Select";
 import Option from "../../../../components/Base/Option/Option";
 import Input from "../../../../components/Base/Input/Input";
-import {RelationType} from "../../../../models/db/db.types";
+import {Column, RelationType, Table} from "../../../../models/db/db.types";
 
 interface TableRealationsTabProps {
   editTableViewModel: ReturnType<typeof useEditTableViewModel>
@@ -44,17 +44,19 @@ function TableRelationsTab({editTableViewModel}: TableRealationsTabProps) {
                   <Input type="text" defaultValue={r.foreignKeyName} onChange={onUpdate}/>
                 </td>
                 <td>
-                  <Select name="columnId" defaultValue={r.columnId} onChange={onUpdate}>
-                    {table?.columns?.map(c => {
-                      return (
-                        <Option value={c.id}>{c.name}</Option>
-                      )
-                    })}
+                  <Select name="columnId" defaultValue={r.columnId} onChange={onUpdate} required={true}>
+                    {
+                      getColumns(table?.columns).map(c => {
+                        return (
+                          <Option value={c.id}>{c.name}</Option>
+                        )
+                      })
+                    }
                   </Select>
                 </td>
                 <td>
-                  <Select name="type" defaultValue={r.type} onChange={onUpdate}>
-                    {Object.entries(RelationType).map(([key, value]) => {
+                  <Select name="type" defaultValue={r.type} onChange={onUpdate} required={true}>
+                    {getRelationTypes().map(([key, value]) => {
                       return (
                         <Option value={value}>{key}</Option>
                       )
@@ -62,8 +64,8 @@ function TableRelationsTab({editTableViewModel}: TableRealationsTabProps) {
                   </Select>
                 </td>
                 <td>
-                  <Select name="referenceTableId" defaultValue={r.referenceColumnId} onChange={onUpdate}>
-                    {referenceTables?.map(t => {
+                  <Select name="referenceTableId" defaultValue={r.referenceTableId} onChange={onUpdate} required={true}>
+                    {getReferenceTables(referenceTables)?.map(t => {
                       return (
                         <Option value={t.id}>{t.name}</Option>
                       )
@@ -71,21 +73,13 @@ function TableRelationsTab({editTableViewModel}: TableRealationsTabProps) {
                   </Select>
                 </td>
                 <td>
-                  <Select name="referenceColumnId" defaultValue={r.referenceTableId} onChange={onUpdate}>
+                  <Select name="referenceColumnId" defaultValue={r.referenceColumnId} onChange={onUpdate} required={true}>
                     {
-                      r.referenceTableId
-                        ? (() => {
-                          const referenceTable  = referenceTables?.find(({id}) => id === r.referenceTableId);
-
-                          if (!referenceTable) return;
-
-                          return referenceTable.columns.map(c => {
-                            return (
-                              <Option value={c.id}>{c.name}</Option>
-                            )
-                          })
-                        })()
-                        : null
+                      getReferenceColumns(r.referenceTableId).map(c => {
+                        return (
+                          <Option value={c.id}>{c.name}</Option>
+                        )
+                      })
                     }
                   </Select>
                 </td>
@@ -101,6 +95,48 @@ function TableRelationsTab({editTableViewModel}: TableRealationsTabProps) {
       </div>
     </>
   )
+
+  function getColumns(columns: Column[]): Pick<Column, 'id' | 'name'>[] {
+    const result = [{id: '', name: ''}];
+
+    columns?.forEach(({id, name}) => result.push({id, name}))
+
+    return result;
+  }
+
+  function getRelationTypes(): [key: string, value: string][] {
+    return [
+      ['', ''],
+      ...Object.entries(RelationType)
+    ];
+  }
+
+  function getReferenceTables(tables: Table[]): Pick<Table, 'id' | 'name'>[] {
+    const _tables = [{id: '', name: ''}];
+
+    tables?.forEach(({id, name}) => _tables.push({id, name}));
+
+    return _tables
+  }
+
+  function getReferenceColumns(referenceTableId: string): Pick<Column, 'id' | 'name'>[] {
+
+    if (!referenceTableId?.length) {
+      return [];
+    }
+
+    const referenceTable = referenceTables?.find(({id}) => id === referenceTableId);
+
+    if (!referenceTable) {
+      return [];
+    }
+
+    const _columns = [{id: '', name: ''}];
+
+    referenceTable.columns?.forEach(({id, name}) => _columns.push({id, name}));
+
+    return _columns;
+  }
 }
 
 export default TableRelationsTab;

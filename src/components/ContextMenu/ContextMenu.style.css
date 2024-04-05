@@ -1,0 +1,15 @@
+.context-menu__wrapper {
+    width: auto;
+    height: auto;
+}
+
+.context-menu__body {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    position: absolute;
+    background: lightgray;
+    padding: 5px;
+    border-radius: 5px;
+    z-index: 2;
+}

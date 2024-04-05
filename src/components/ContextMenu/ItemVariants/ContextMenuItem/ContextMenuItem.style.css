@@ -1,0 +1,9 @@
+.context-menu__item {
+    cursor: pointer;
+    padding: 5px;
+    border-radius: 5px;
+}
+
+.context-menu__item:hover {
+    background: slategray;
+}

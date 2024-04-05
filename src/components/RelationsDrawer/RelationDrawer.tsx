@@ -9,6 +9,7 @@ function RelationsDrawerV2() {
     const canvas = document.querySelector(".space__canvas") as HTMLCanvasElement;
     canvas.width = workspace.clientWidth;
     canvas.height = workspace.clientHeight;
+
     const ctx = canvas.getContext("2d")!;
 
     const td = db?.tables?.reduce((tablesAcc, table) => {
@@ -83,7 +84,7 @@ function RelationsDrawerV2() {
 
     const rowHeight = 22;
 
-    for (let [, tData] of td) {
+    for (let [tableId, tData] of td) {
       for (let [, cData] of tData.cols) {
         if (!cData?.refTableId?.length || !cData?.refColumnId?.length) {
           continue;
@@ -127,7 +128,8 @@ function RelationsDrawerV2() {
           return rowHeight * targetInd - (rowHeight / 2)
         }
 
-        const startX = first?.data?.selfPos?.x + 200;
+        const firstTableWidth = (document.getElementById(`table_${tableId}`)!.offsetWidth - 5) || 200;
+        const startX = first?.data?.selfPos?.x + firstTableWidth;
         const startY = first?.data?.selfPos?.y + calcY(first.colInd) - 2;
 
         const endX = second?.data?.selfPos?.x;

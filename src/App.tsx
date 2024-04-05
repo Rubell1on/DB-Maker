@@ -7,7 +7,7 @@ import './fonts/Rubik-Regular.ttf'
 function App() {
 
   return (
-    <div className="app">
+    <div id="app" className="app">
       <BrowserRouter>
         <AppRouter/>
       </BrowserRouter>

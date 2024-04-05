@@ -5,6 +5,7 @@ import Input from "../../../../components/Base/Input/Input";
 import Select from "../../../../components/Base/Select/Select";
 import Option from "../../../../components/Base/Option/Option";
 import Button from "../../../../components/Base/Button/Button";
+
 interface TableColumnsTabProps {
   // table?: Table;
   // onChange?: ChangeEventHandler<HTMLInputElement | HTMLSelectElement>;
@@ -51,10 +52,10 @@ function TableColumnsTab({editTableViewModel}: TableColumnsTabProps) {
                          defaultChecked={c.isPrimaryKey} onChange={onChange}/>
                 </td>
                 <td>
-                  <Select className="column__type" name="type" defaultValue={c.type}
-                          onChange={onChange}>
+                  <Select className="column__type" name="type" defaultValue={c.type} onChange={onChange}
+                          required={true}>
                     {
-                      Object.entries(ColumnType).map(([key, value], i) => {
+                      getColumnTypes().map(([key, value], i) => {
                         return <Option key={`type_option_${i}`} value={value}>{key}</Option>
                       })
                     }
@@ -82,6 +83,13 @@ function TableColumnsTab({editTableViewModel}: TableColumnsTabProps) {
       </div>
     </>
   )
+
+  function getColumnTypes(): [key: string, value: string][] {
+    return [
+      ['', ''],
+      ...Object.entries(ColumnType)
+    ]
+  }
 }
 
 export default TableColumnsTab;
