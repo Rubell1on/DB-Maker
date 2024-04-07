@@ -15,6 +15,7 @@ export interface DB {
 export interface Table {
     id: string;
     name: string;
+    description: string;
     position: Vector2
     columns: Column[];
     relations: Relation[];

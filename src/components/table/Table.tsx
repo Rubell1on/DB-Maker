@@ -1,6 +1,6 @@
 import './Table.css'
 import {Table as TableDTO} from "../../models/db/db.types";
-import {MouseEvent} from "react";
+import {MouseEvent, useEffect} from "react";
 import {Props as _Props} from "../../shared/Props";
 import useDoubleClick from "../../hooks/useDoubleClick";
 
@@ -21,6 +21,25 @@ function Table({
                  headerMouseEvents
                }: TableProps) {
   const doubleClick = useDoubleClick(onEditTableClick);
+  const relations: HTMLElement[] = [];
+
+  useEffect(() => {
+    props?.relations?.forEach(({id}) => {
+      const relPath = document.getElementById(`rel_${id}`);
+
+      if (relPath) {
+        relations.push(relPath);
+      }
+    });
+  });
+
+  function onMouseEnter() {
+    relations.forEach(r => r.classList.add('selected'));
+  }
+
+  function onMouseLeave() {
+    relations.forEach(r => r.classList.remove('selected'));
+  }
 
   return (
     <div
@@ -28,20 +47,29 @@ function Table({
       className="table"
       style={{transform: `translate(${props.position.x}px, ${props.position.y}px)`}}
       onClick={doubleClick.onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     >
       <div className="table__header" onMouseDown={headerMouseEvents.onMouseDown}>
-        <div className="header__name">{props.name}</div>
-        <div className="header__controls">
-          <button className="header__settings" onClick={onEditTableClick}>*</button>
-          <button className="header__delete" onClick={onDelete}>-</button>
+        <div className="header__main">
+          <div className="header__name">{props.name}</div>
+          <div className="header__controls">
+            <button className="header__settings" onClick={onEditTableClick}>*</button>
+            <button className="header__delete" onClick={onDelete}>-</button>
+          </div>
         </div>
+        {
+          props.description?.length
+            ? <div className="header__description">{props.description}</div>
+            : null
+        }
       </div>
       <div className="table__wrapper">
         <table className="table__body">
           <tbody>
           {
             props.columns.map(c => {
-              return <tr className="body__column">
+              return <tr id={`table_column_${c.id}`} className="body__column">
                 <td className="column__pk">{c.isPrimaryKey ? 'PK' : ''}</td>
                 <td className="column__name">{c.name}</td>
                 <td className="column__type">{c.type}</td>

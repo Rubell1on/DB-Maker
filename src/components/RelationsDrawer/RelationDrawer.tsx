@@ -1,154 +1,147 @@
-import {useContext, useEffect} from "react";
+import {useCallback, useContext, useEffect, useState} from "react";
 import {DbContext} from "../../views/Editor/EditorView";
 import {Vector2} from "../../shared/Vector2";
+import './RelationDrawer.style.css';
 
-function RelationsDrawerV2() {
+function RelationsDrawer() {
+  const className = "space__svg";
   const db = useContext(DbContext)!;
+  const [paths, setPaths] = useState<{ id: string, curve: string }[]>([]);
+
   useEffect(() => {
-    const workspace = document.querySelector('.editor__space')!;
-    const canvas = document.querySelector(".space__canvas") as HTMLCanvasElement;
-    canvas.width = workspace.clientWidth;
-    canvas.height = workspace.clientHeight;
+    if (!db) return;
 
-    const ctx = canvas.getContext("2d")!;
+    const relationSpaceRect = document.querySelector(`.${className}`)?.getBoundingClientRect();
 
-    const td = db?.tables?.reduce((tablesAcc, table) => {
-      let tData: {
-        selfPos: Vector2,
-        cols: Map<string, {
-          refTableId: string | null,
-          refColumnId: string | null,
-          colInd: number,
-        }>
-      } = {
-        selfPos: table.position,
-        cols: new Map<string, {
-          refTableId: string | null,
-          refColumnId: string | null,
-          colInd: number,
-        }>()
-      };
+    if (!relationSpaceRect) return;
 
-      table.columns.reduce((colsMap, col, i) => {
-        const rel = table.relations.find(r => {
-          return r.columnId === col.id
+    type TableData = {
+      position: Vector2;
+      size: Vector2;
+    }
+
+    const tables = new Map<string, TableData>();
+
+    type ColumnData = {
+      tableId: string,
+      position: Vector2,
+      height: number
+    }
+
+    const columns = new Map<string, ColumnData>
+
+    const relations: {
+      id: string,
+      columnId: string,
+      referenceColumnId: string
+    }[] = [];
+
+    db.tables?.forEach(table => {
+      const tableRect = document.getElementById(`table_${table.id}`)?.getBoundingClientRect();
+      const size = new Vector2();
+
+      size.x = tableRect?.width || 0;
+      size.y = tableRect?.height || 0;
+
+      tables.set(table.id, {
+        position: table.position,
+        size
+      });
+
+      table.columns.forEach(column => {
+        const columnRect = document.getElementById(`table_column_${column.id}`)?.getBoundingClientRect();
+
+        const position = new Vector2();
+
+        position.x = columnRect?.left || 0;
+        position.y = columnRect?.top || 0;
+
+        columns.set(column.id, {
+          tableId: table.id,
+          position,
+          height: columnRect?.height || 0
+        })
+      });
+
+      table.relations.forEach(({id, columnId, referenceColumnId}) => {
+        relations.push({
+          id,
+          columnId,
+          referenceColumnId
         });
+      });
+    });
 
-        const colData = {
-          colInd: i,
-          refTableId: rel?.referenceTableId || null,
-          refColumnId: rel?.referenceColumnId || null
-        };
+    const paths = relations.map(relation => {
+      type RelationData = {
+        table: TableData,
+        column: ColumnData
+      }
+      let first: RelationData | null = null;
+      let second: RelationData | null = null;
 
-        if (!tData) {
-          const cols = new Map<string, {
-            colInd: number,
-            refTableId: string | null,
-            refColumnId: string | null
-          }>();
+      const firstColumn = columns.get(relation.columnId)!;
+      const firstTable = tables.get(firstColumn.tableId)!;
 
-          tData = {
-            selfPos: table.position,
-            cols
-          }
+      const secondColumn = columns.get(relation.referenceColumnId)!;
+      const secondTable = tables.get(secondColumn.tableId)!;
+
+      if (firstTable.position.x > secondTable.position.x) {
+        first = {
+          table: secondTable,
+          column: secondColumn
         }
 
-        tData.cols.set(col.id, colData);
+        second = {
+          table: firstTable,
+          column: firstColumn
+        }
+      } else {
+        first = {
+          table: firstTable,
+          column: firstColumn
+        }
 
-        return colsMap;
-      }, new Map<string, {
-        refTableId: string | null,
-        refColumnId: string | null,
-        colInd: number,
-      }>());
-
-      if (tData) {
-        tablesAcc.set(table.id, tData);
+        second = {
+          table: secondTable,
+          column: secondColumn
+        }
       }
 
-      return tablesAcc;
-    }, new Map<string, {
-      selfPos: Vector2,
-      cols: Map<string, {
-        refTableId: string | null,
-        refColumnId: string | null,
-        colInd: number,
-      }>
-    }>())
+      const startX = first.column.position.x + first.table.size.x - 9;
+      const startY = first.column.position.y - relationSpaceRect.top + first.column.height / 2;
 
-    console.log(td);
+      const endX = second.column.position.x;
+      const endY = second.column.position.y - relationSpaceRect.top + second.column.height / 2;
 
-    if (!td?.size) {
-      return;
-    }
+      const middleX = (startX + endX) / 2;
+      const middleY = (startY + endY) / 2;
 
-    const rowHeight = 22;
+      const controlX = (middleX + startX) / 2;
+      const _controlY = (middleY + startY) / 2;
+      const controlY = _controlY + (startY - middleY) / 2;
 
-    for (let [tableId, tData] of td) {
-      for (let [, cData] of tData.cols) {
-        if (!cData?.refTableId?.length || !cData?.refColumnId?.length) {
-          continue;
-        }
-
-        interface T {
-          data: typeof tData,
-          colInd: number
-        }
-
-        let first: T | null = null;
-        let second: T | null = null;
-
-        const refTData = td.get(cData.refTableId);
-
-        if (!refTData) continue;
-
-        if (tData.selfPos.x > refTData.selfPos.x) {
-          second = {
-            data: tData,
-            colInd: cData.colInd
-          };
-
-          first = {
-            data: refTData,
-            colInd: refTData.cols.get(cData.refColumnId)!.colInd
-          };
-        } else {
-          second = {
-            data: refTData,
-            colInd: refTData.cols.get(cData.refColumnId)!.colInd
-          };
-          first = {
-            data: tData,
-            colInd: cData.colInd
-          };
-        }
-
-        const calcY = (ind: number): number => {
-          const targetInd = ind + 2;
-          return rowHeight * targetInd - (rowHeight / 2)
-        }
-
-        const firstTableWidth = (document.getElementById(`table_${tableId}`)!.offsetWidth - 5) || 200;
-        const startX = first?.data?.selfPos?.x + firstTableWidth;
-        const startY = first?.data?.selfPos?.y + calcY(first.colInd) - 2;
-
-        const endX = second?.data?.selfPos?.x;
-        const endY = second?.data?.selfPos?.y + calcY(second.colInd) + 2;
-
-        const middle = (startX + endX) / 2
-
-        ctx.beginPath();
-        ctx.moveTo(startX, startY);
-        ctx.bezierCurveTo(middle, startY, middle, endY, endX, endY);
-        ctx.stroke();
+      return {
+        id: `rel_${relation.id}`,
+        curve: `M${startX},${startY} Q${controlX},${controlY} ${middleX},${middleY} T${endX},${endY}`,
       }
-    }
+    });
 
+    setPaths(paths);
   }, [db]);
 
   return (
-    <canvas className="space__canvas"/>
+    <svg
+      width="100%"
+      height="100%"
+      className={className}
+      xmlns="http://www.w3.org/2000/svg"
+      fillRule="evenodd"
+      clipRule="evenodd"
+    >
+      {paths?.map(p => (<path id={p.id} className="relation" d={p.curve}/>))}
+    </svg>
   )
 }
 
-export default RelationsDrawerV2
+export default RelationsDrawer

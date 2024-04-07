@@ -48,4 +48,12 @@
     margin: 10px 0;
 }
 
+.table-editor__description {
+    width: -webkit-fill-available;
+    height: 100px;
+    border-radius: 5px;
+    resize: none;
+    padding: 5px;
+}
+
 

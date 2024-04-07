@@ -2,11 +2,11 @@ import './Editor.css'
 import Table from "../../components/table/Table";
 import {DB} from "../../models/db/db.types";
 import {createContext, useEffect} from 'react'
-import RelationsDrawerV2 from "../../components/RelationsDrawer/RelationDrawer";
 import {EditorViewArgs} from "./EditorView.types";
 import {Outlet, useNavigate, useParams} from "react-router-dom";
 import useEditorViewModel from "../../viewmodels/Editor/EditorViewModel";
 import ContextMenu from "../../components/ContextMenu/ContextMenu";
+import RelationsDrawer from "../../components/RelationsDrawer/RelationDrawer";
 
 export const DbContext = createContext<DB | null>(null);
 
@@ -108,7 +108,7 @@ function EditorView({editorViewModel}: EditorViewArgs) {
                   }}
                 />
               </ContextMenu>)}
-            <RelationsDrawerV2/>
+            <RelationsDrawer />
           </div>
         </ContextMenu>
         <EditTableModalContext.Provider value={{

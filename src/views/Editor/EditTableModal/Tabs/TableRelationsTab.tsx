@@ -106,7 +106,7 @@ function TableRelationsTab({editTableViewModel}: TableRealationsTabProps) {
 
   function getRelationTypes(): [key: string, value: string][] {
     return [
-      ['', ''],
+      ['', 'Не выбрана'],
       ...Object.entries(RelationType)
     ];
   }
@@ -131,9 +131,20 @@ function TableRelationsTab({editTableViewModel}: TableRealationsTabProps) {
       return [];
     }
 
-    const _columns = [{id: '', name: ''}];
+    let name: string = !referenceTable.columns.length ? 'Нет колонок' : 'Не выбрана';
 
-    referenceTable.columns?.forEach(({id, name}) => _columns.push({id, name}));
+    const columnsWithPrimaryKey = referenceTable.columns.filter(({isPrimaryKey}) => isPrimaryKey)
+    if (!columnsWithPrimaryKey.length) {
+      name = 'Нет колонок с первичным ключом'
+    }
+
+    const _columns = [{id: '', name}];
+
+    referenceTable.columns?.forEach(({id, name, isPrimaryKey}) => {
+      if (isPrimaryKey) {
+        _columns.push({id, name});
+      }
+    });
 
     return _columns;
   }

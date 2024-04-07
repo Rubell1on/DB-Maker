@@ -30,7 +30,7 @@ function useEditTableViewModel() {
     setReferenceTables(dbContext?.tables?.filter(({columns}) => columns?.length) || []);
   }, [dbContext, tableId]);
 
-  function onUpdateTableField(e: ChangeEvent<HTMLInputElement | HTMLSelectElement>) {
+  function onUpdateTableField(e: ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
     if (!table) return;
 
     const {name, value} = e.target;
@@ -108,13 +108,6 @@ function useEditTableViewModel() {
         name,
         value
       } = (e.target) as HTMLInputElement;
-
-      // switch (name) {
-      //   case 'referenceColumnId': {
-      //
-      //     break;
-      //   }
-      // }
 
       if (!table) return;
 

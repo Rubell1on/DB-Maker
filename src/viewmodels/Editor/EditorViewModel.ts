@@ -37,6 +37,7 @@ function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
       ...currentDb.tables, {
         id: uuid(),
         name: 'Таблица',
+        description: '',
         position: new Vector2(),
         columns: [],
         relations: []
