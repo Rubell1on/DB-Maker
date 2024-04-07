@@ -1,4 +1,4 @@
-import {useCallback, useContext, useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {DbContext} from "../../views/Editor/EditorView";
 import {Vector2} from "../../shared/Vector2";
 import './RelationDrawer.style.css';
@@ -28,7 +28,7 @@ function RelationsDrawer() {
       height: number
     }
 
-    const columns = new Map<string, ColumnData>
+    const columns = new Map<string, ColumnData>();
 
     const relations: {
       id: string,
@@ -77,8 +77,8 @@ function RelationsDrawer() {
         table: TableData,
         column: ColumnData
       }
-      let first: RelationData | null = null;
-      let second: RelationData | null = null;
+      let first: RelationData;
+      let second: RelationData;
 
       const firstColumn = columns.get(relation.columnId)!;
       const firstTable = tables.get(firstColumn.tableId)!;
