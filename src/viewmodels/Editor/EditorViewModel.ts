@@ -1,13 +1,17 @@
 import {Table as TableDTO, Table} from "../../models/db/db.types";
 import uuid from "react-uuid";
 import {Vector2} from "../../shared/Vector2";
-import {MouseEvent, useEffect, useState} from "react";
+import {MouseEvent, useEffect, useMemo, useState} from "react";
 import {DB} from "../../models/db/db.types";
 import useDBModel from "../../models/db/db.model";
 import useMouseDrag from "../../hooks/useMouseDrag";
 import {useNavigate} from "react-router-dom";
+import {SaveFileType, useFile} from "../../hooks/useFile";
 
-function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
+function useEditorViewModel(
+  dbModel: ReturnType<typeof useDBModel>,
+  fileHook: ReturnType<typeof useFile>
+) {
   const [currentDbId, setCurrentDbId] = useState<string>();
   const [currentDb, setCurrentDb] = useState<DB | null>(null);
   const mouseDrag = useMouseDrag();
@@ -30,6 +34,7 @@ function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
 
   const [selectedTables, setSelectedTables] = useState<TableDTO[]>([]);
   const [editingTable, setEditingTable] = useState(false);
+  const isAllowedToSaveFile = useMemo(() => !fileHook.fileHandler, [fileHook.fileHandler]);
 
 
   function createTable() {
@@ -122,6 +127,36 @@ function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
     dbModel.updateDb(currentDbId!, { tables })
   }
 
+  async function onOpenDb() {
+    const db = await fileHook.load();
+
+    if (!db) {
+      console.error(`Не удалось загрузить файл БД`);
+      return;
+    }
+
+    dbModel.setDbs([db]);
+
+    setCurrentDbId(db.id);
+    navigate(`DB-Maker/editor/${db.id}`)
+  }
+
+  async function onSaveDb(type: SaveFileType) {
+    const db = dbModel.dbs.find(({id}) => id === currentDbId);
+
+    if (!db) {
+      console.error(`Не удалось найти БД с id: ${currentDbId}`);
+      return;
+    }
+
+    const isDbSaved = await fileHook.save(db, type);
+
+    if (!isDbSaved) {
+      console.error(`Не удалось сохранить БД с id: ${currentDbId} в файл`);
+      return;
+    }
+  }
+
   return {
     setCurrentDbId,
     currentDb,
@@ -132,11 +167,14 @@ function useEditorViewModel(dbModel: ReturnType<typeof useDBModel>) {
     onUpdateTable,
     onEditTableClick,
     onCancelTableEdit,
+    onOpenDb,
+    onSaveDb,
     tableHeaderMouseEvents: {
       onHeaderMouseDown,
       onHeaderMouseUp,
       onHeaderMouseMove
-    }
+    },
+    isAllowedToSaveFile
   }
 }
 

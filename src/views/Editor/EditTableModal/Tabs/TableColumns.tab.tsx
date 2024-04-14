@@ -61,16 +61,6 @@ function TableColumnsTab({editTableViewModel}: TableColumnsTabProps) {
                     }
                   </Select>
                 </td>
-                {/*<td>*/}
-                {/*  <input type="button" className="column__edit-relation" value={c.relation ? "*" : "+"}*/}
-                {/*         onClick={setRelationData(c)}/>*/}
-                {/*  {*/}
-                {/*    c.relation*/}
-                {/*      ? <input type="button" className="column__edit-relation" value="-"*/}
-                {/*               onClick={() => onRelationDelete(c.id)}/>*/}
-                {/*      : null*/}
-                {/*  }*/}
-                {/*</td>*/}
               </tr>
             })
           }

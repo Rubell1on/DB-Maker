@@ -10,6 +10,7 @@ function MainMenuView({mainMenuViewModel}: MainMenuViewProps) {
     dbs,
     createDbOpenned,
     onCreateDbOpen,
+    onOpenDb,
     onCreateDbClose,
     onSubmitDb,
     onDeleteDB
@@ -27,7 +28,7 @@ function MainMenuView({mainMenuViewModel}: MainMenuViewProps) {
         <h2 className="main-menu__header">Главное меню</h2>
         <div className="main-menu__controls">
           <Button onClick={onCreateDbOpen} value="Создать БД" />
-          <Button onClick={onCreateDbOpen} value="Открыть существующую БД" />
+          <Button onClick={async () => await onOpenDb()} value="Открыть существующую БД" />
         </div>
         <div className="main-menu__recent">
           <h3>Прошлые проекты</h3>

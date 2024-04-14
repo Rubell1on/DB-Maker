@@ -8,6 +8,15 @@ function RelationsDrawer() {
   const db = useContext(DbContext)!;
   const [paths, setPaths] = useState<{ id: string, curve: string }[]>([]);
 
+  type TableData = {
+    position: Vector2;
+    size: Vector2;
+    htmlElement: HTMLElement
+  }
+
+  const tables = new Map<string, TableData>();
+  const htmlElementsToHighlight = new Map<string,Set<string>>();
+
   useEffect(() => {
     if (!db) return;
 
@@ -15,29 +24,28 @@ function RelationsDrawer() {
 
     if (!relationSpaceRect) return;
 
-    type TableData = {
-      position: Vector2;
-      size: Vector2;
-    }
-
-    const tables = new Map<string, TableData>();
-
     type ColumnData = {
-      tableId: string,
-      position: Vector2,
-      height: number
+      tableId: string;
+      position: Vector2;
+      height: number;
     }
 
     const columns = new Map<string, ColumnData>();
 
     const relations: {
-      id: string,
-      columnId: string,
-      referenceColumnId: string
+      id: string;
+      columnId: string;
+      referenceColumnId: string;
+      referenceTableId: string;
     }[] = [];
 
-    db.tables?.forEach(table => {
-      const tableRect = document.getElementById(`table_${table.id}`)?.getBoundingClientRect();
+    for (const table of db?.tables) {
+      const currentTableId = `table_${table.id}`;
+      const tableElement = document.getElementById(currentTableId);
+
+      if (!tableElement) continue;
+
+      const tableRect = tableElement?.getBoundingClientRect();
       const size = new Vector2();
 
       size.x = tableRect?.width || 0;
@@ -45,7 +53,8 @@ function RelationsDrawer() {
 
       tables.set(table.id, {
         position: table.position,
-        size
+        size,
+        htmlElement: tableElement
       });
 
       table.columns.forEach(column => {
@@ -63,14 +72,32 @@ function RelationsDrawer() {
         })
       });
 
-      table.relations.forEach(({id, columnId, referenceColumnId}) => {
-        relations.push({
-          id,
-          columnId,
-          referenceColumnId
-        });
+      let sourceElements: Set<string> | undefined;
+
+      if (!(sourceElements = htmlElementsToHighlight.get(currentTableId))) {
+        sourceElements = new Set<string>([]);
+        htmlElementsToHighlight.set(currentTableId, sourceElements);
+      }
+
+      table.relations.forEach(r => {
+        const relId = `rel_${r.id}`;
+
+        let refTableElementsToHighlight: Set<string> | undefined;
+
+        const referenceTableId = `table_${r.referenceTableId}`;
+        if (!(refTableElementsToHighlight = htmlElementsToHighlight.get(referenceTableId))) {
+          refTableElementsToHighlight = new Set<string>([]);
+          htmlElementsToHighlight.set(referenceTableId, refTableElementsToHighlight);
+        }
+
+        sourceElements!.add(relId).add(referenceTableId);
+        refTableElementsToHighlight.add(relId).add(currentTableId);
+        relations.push(r);
       });
-    });
+
+      tableElement.addEventListener('mouseenter', onMouseEnter);
+      tableElement.addEventListener('mouseleave', onMouseLeave);
+    }
 
     const paths = relations.map(relation => {
       type RelationData = {
@@ -128,7 +155,48 @@ function RelationsDrawer() {
     });
 
     setPaths(paths);
-  }, [db]);
+
+    return () => {
+      for (const [, t] of tables) {
+        t.htmlElement.removeEventListener('mouseenter', onMouseEnter);
+        t.htmlElement.removeEventListener('mouseleave', onMouseLeave);
+      }
+    }
+  },[db]);
+
+  function onMouseEnter(e: globalThis.MouseEvent) {
+    console.log('RD.onMouseEnter');
+    const tableId = (e.target as HTMLDivElement).id;
+
+    const elements = htmlElementsToHighlight.get(tableId);
+
+    if (!elements?.size) return;
+
+    for (const e of elements) {
+      const element = document.getElementById(e);
+
+      if (!element) continue;
+
+      element.classList.add('selected');
+    }
+  }
+
+  function onMouseLeave(e: globalThis.MouseEvent) {
+    console.log('RD.onMouseLeave');
+    const tableId = (e.target as HTMLDivElement).id;
+
+    const elements = htmlElementsToHighlight.get(tableId);
+
+    if (!elements?.size) return;
+
+    for (const e of elements) {
+      const element = document.getElementById(e);
+
+      if (!element) continue;
+
+      element.classList.remove('selected');
+    }
+  }
 
   return (
     <svg

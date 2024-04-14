@@ -7,6 +7,7 @@ import {Outlet, useNavigate, useParams} from "react-router-dom";
 import useEditorViewModel from "../../viewmodels/Editor/EditorViewModel";
 import ContextMenu from "../../components/ContextMenu/ContextMenu";
 import RelationsDrawer from "../../components/RelationsDrawer/RelationDrawer";
+import {SaveFileType} from "../../hooks/useFile";
 
 export const DbContext = createContext<DB | null>(null);
 
@@ -35,7 +36,10 @@ function EditorView({editorViewModel}: EditorViewArgs) {
     deleteTable,
     onUpdateTable,
     onCancelTableEdit,
-    tableHeaderMouseEvents
+    onOpenDb,
+    onSaveDb,
+    tableHeaderMouseEvents,
+    isAllowedToSaveFile
   } = editorViewModel;
 
   const navigate = useNavigate();
@@ -44,14 +48,19 @@ function EditorView({editorViewModel}: EditorViewArgs) {
     <DbContext.Provider value={db}>
       <div className="editor">
         <div className="editor__contorls">
-          <ContextMenu position="fixed" contextItems={[{
+          <ContextMenu position="fixed" contextMenuMouseButton="LMB" contextItems={[{
             type: 'item',
             name: 'Открыть',
-            onClick: onOpenDb
+            onClick: async () => await onOpenDb()
+          }, {
+            type: 'item',
+            name: 'Сохранить',
+            disabled: isAllowedToSaveFile,
+            onClick: async () => await onSaveDb(SaveFileType.Current)
           }, {
             type: 'item',
             name: 'Сохранить как',
-            onClick: onSaveDb
+            onClick: async () => await onSaveDb(SaveFileType.New)
           }, {
             type: 'list',
             name: 'Экспорт',
@@ -67,7 +76,7 @@ function EditorView({editorViewModel}: EditorViewArgs) {
           {/*<button className="controls__save-db" onClick={onSaveDb}>Сохранить как</button>*/}
           {/*<button className="controls__add-table" onClick={createTable}>Добавить таблицу</button>*/}
         </div>
-        <ContextMenu position="dynamic" contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
+        <ContextMenu position="dynamic" contextMenuMouseButton="RMB" contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
           type: 'item',
           name: 'Создать таблицу',
           onClick: createTable,
@@ -91,7 +100,7 @@ function EditorView({editorViewModel}: EditorViewArgs) {
           <div className="editor__space" onMouseUp={tableHeaderMouseEvents.onHeaderMouseUp}
                onMouseMove={tableHeaderMouseEvents.onHeaderMouseMove}>
             {db?.tables.map(t =>
-              <ContextMenu position="dynamic" contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
+              <ContextMenu position="dynamic" contextMenuMouseButton="RMB" contextMenuPositionOffset={{x: 0, y: -40}} contextItems={[{
                 type: 'item',
                 name: 'Удалить',
                 onClick: () => deleteTable(t.id)
@@ -120,71 +129,6 @@ function EditorView({editorViewModel}: EditorViewArgs) {
       </div>
     </DbContext.Provider>
   )
-
-  async function onOpenDb() {
-    const filePickerOptions: OpenFilePickerOptions = {
-      types: [{
-        description: 'Файл dbm',
-        accept: {'application/dbm': ['.dbm']}
-      }],
-      multiple: false,
-      excludeAcceptAllOption: true
-    };
-
-    let fileHandlers: FileSystemFileHandle[] = [];
-
-    try {
-      fileHandlers = await window.showOpenFilePicker(filePickerOptions);
-    } catch (error) {
-      console.error(error);
-    }
-
-    if (!fileHandlers.length) {
-      return;
-    }
-
-    const file = await fileHandlers[0].getFile();
-
-    let parsedDb: DB | null = null;
-
-    try {
-      parsedDb = JSON.parse(await file.text())
-    } catch ({message}) {
-      console.error(`Ошибка парсинга файла базы данных: ${message}`);
-    }
-
-    if (!parsedDb) {
-      return;
-    }
-
-    // setDb(parsedDb);
-  }
-
-  async function onSaveDb() {
-    const saveFileOptions: SaveFilePickerOptions = {
-      types: [{
-        description: 'Файл dbm',
-        accept: {'application/dbm': ['.dbm']}
-      }],
-      excludeAcceptAllOption: true,
-    }
-
-    let saveHandle: FileSystemFileHandle | null = null;
-
-    try {
-      saveHandle = await window.showSaveFilePicker(saveFileOptions);
-    } catch (error) {
-      console.error(error);
-    }
-
-    if (!saveHandle) {
-      return;
-    }
-
-    const writableStream = await saveHandle.createWritable();
-    await writableStream.write(JSON.stringify(db));
-    await writableStream.close();
-  }
 }
 
 export default EditorView;

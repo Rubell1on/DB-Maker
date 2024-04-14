@@ -1,11 +1,10 @@
 import './Table.css'
 import {Table as TableDTO} from "../../models/db/db.types";
-import {MouseEvent, useEffect} from "react";
+import {MouseEvent} from "react";
 import {Props as _Props} from "../../shared/Props";
-import useDoubleClick from "../../hooks/useDoubleClick";
 
 type TableProps = _Props<TableDTO> & {
-  onEditTableClick: (e: MouseEvent<HTMLButtonElement, globalThis.MouseEvent>) => void;
+  onEditTableClick: (e: MouseEvent<HTMLDivElement | HTMLButtonElement, globalThis.MouseEvent>) => void;
   onDelete: () => void;
   headerMouseEvents: {
     onMouseDown: (e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) => void;
@@ -20,35 +19,12 @@ function Table({
                  onDelete,
                  headerMouseEvents
                }: TableProps) {
-  const doubleClick = useDoubleClick(onEditTableClick);
-  const relations: HTMLElement[] = [];
-
-  useEffect(() => {
-    props?.relations?.forEach(({id}) => {
-      const relPath = document.getElementById(`rel_${id}`);
-
-      if (relPath) {
-        relations.push(relPath);
-      }
-    });
-  });
-
-  function onMouseEnter() {
-    relations.forEach(r => r.classList.add('selected'));
-  }
-
-  function onMouseLeave() {
-    relations.forEach(r => r.classList.remove('selected'));
-  }
-
   return (
     <div
       id={`table_${props.id}`}
       className="table"
       style={{transform: `translate(${props.position.x}px, ${props.position.y}px)`}}
-      onClick={doubleClick.onClick}
-      onMouseEnter={onMouseEnter}
-      onMouseLeave={onMouseLeave}
+      onDoubleClick={onEditTableClick}
     >
       <div className="table__header" onMouseDown={headerMouseEvents.onMouseDown}>
         <div className="header__main">

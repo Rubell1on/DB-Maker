@@ -1,13 +1,14 @@
 import './ContextMenu.style.css';
-import {MouseEvent, /*useEffect,*/ useState} from "react";
+import {MouseEvent, useState} from "react";
 import {Vector2} from "../../shared/Vector2";
-import {ContextMenuItemProps} from "./ItemVariants/ContextMenuItem/ContextMenuItem.types";
+import {ContextMenuElementProps} from "./ItemVariants/ContextMenuItem/ContextMenuItem.types";
 import createContextMenuItem from "./ItemVariants/contextMenuItem.factory";
 
 type ContextMenuProps = {
   children?: any,
-  contextItems?: ContextMenuItemProps[]
+  contextItems?: ContextMenuElementProps[]
   contextMenuPositionOffset?: Vector2,
+  contextMenuMouseButton: 'LMB' | 'RMB'
   position: 'fixed' | 'dynamic'
 }
 
@@ -29,7 +30,7 @@ function ContextMenu(props: ContextMenuProps) {
   //     app.removeEventListener('click', onAppClick);
   //   }
   // }, []);
-
+  //
   // function onAppClick() {
   //   console.log('onAppClick')
   //   // if (!isOpenned) return;
@@ -43,8 +44,16 @@ function ContextMenu(props: ContextMenuProps) {
     ? {}
     : {transform: `translate(${menuPosition.x}px, ${menuPosition.y}px)`}
 
+  const _onContextMenu = props.contextMenuMouseButton === 'LMB'
+    ? onClick
+    : onContextMenu;
+
+  const _onClick = props.contextMenuMouseButton === 'LMB'
+    ? onContextMenu
+    : onClick;
+
   return (
-    <div onContextMenu={onContextMenu} onClick={onClick} className="context-menu__wrapper">
+    <div onContextMenu={_onContextMenu} onClick={_onClick} className="context-menu__wrapper">
       <>
         {children}
         {

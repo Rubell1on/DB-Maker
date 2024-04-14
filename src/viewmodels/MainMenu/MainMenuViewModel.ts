@@ -1,9 +1,13 @@
 import useDBModel from "../../models/db/db.model";
-import {useState, MouseEvent} from "react";
+import {MouseEvent, useState} from "react";
 import {DbSubmitEventArgs} from "./MainMenuViewModel.types";
 import {useNavigate} from "react-router-dom";
+import {useFile} from "../../hooks/useFile";
 
-function useMainMenuViewModel(dbModel: ReturnType<typeof useDBModel>) {
+function useMainMenuViewModel(
+  dbModel: ReturnType<typeof useDBModel>,
+  fileHook: ReturnType<typeof useFile>
+) {
   const navigate = useNavigate();
   const [createDbOpenned, setCreateDbWindow] = useState(false);
   const [currentDbId, setCurrentDbId] = useState<string | null>(null);
@@ -39,10 +43,26 @@ function useMainMenuViewModel(dbModel: ReturnType<typeof useDBModel>) {
     deleteDb(dbId);
   }
 
+  async function onOpenDb() {
+    const db = await fileHook.load();
+
+    if (!db) {
+      console.error(`Не удалось загрузить файл БД`);
+      return;
+    }
+
+    dbModel.setDbs([db]);
+
+    setCurrentDbId(db.id);
+    navigate(`DB-Maker/editor/${db.id}`)
+  }
+
   return {
     dbs,
     currentDbId,
     createDbOpenned,
+    onOpenDb,
+    // onSaveDb,
     onCreateDbOpen,
     onCreateDbClose,
     onSubmitDb,

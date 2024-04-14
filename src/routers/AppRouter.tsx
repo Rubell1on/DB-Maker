@@ -10,15 +10,17 @@ import EditTableModal from "../views/Editor/EditTableModal/EditTableModal";
 import TableMainInfoTab from "../views/Editor/EditTableModal/Tabs/TableMainInfo.tab";
 import TableColumnsTab from "../views/Editor/EditTableModal/Tabs/TableColumns.tab";
 import TableRelationsTab from "../views/Editor/EditTableModal/Tabs/TableRelationsTab";
+import {useFile} from "../hooks/useFile";
 
 function AppRouter() {
+  const fileHook = useFile();
   const dbModel = useDBModel();
-  let mainMenuViewModel = useMainMenuViewModel(dbModel);
+  let mainMenuViewModel = useMainMenuViewModel(dbModel, fileHook);
 
   return (
     <Routes>
       <Route path="DB-Maker/" element={<MainMenuView mainMenuViewModel={mainMenuViewModel}/>}/>
-      <Route path="DB-Maker/editor/:currentDbId" element={<EditorView editorViewModel={useEditorViewModel(dbModel)}/>}>
+      <Route path="DB-Maker/editor/:currentDbId" element={<EditorView editorViewModel={useEditorViewModel(dbModel, fileHook)}/>}>
         <Route path="table/:tableId" element={
           <EditTableModalContext.Consumer>{
             props => <EditTableModal props={{
@@ -35,7 +37,6 @@ function AppRouter() {
               {(data) => <TableMainInfoTab editTableViewModel={data?.editTableViewModel!}/>}
             </EditTableModalTabContext.Consumer>
           }/>
-          {/*<Route path="main" element={<TableMainInfoTab/>}/>*/}
           <Route path="columns" element={
             <EditTableModalTabContext.Consumer>
               {data => <TableColumnsTab editTableViewModel={data?.editTableViewModel!}/>}

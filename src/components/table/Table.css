@@ -13,6 +13,10 @@
     transition: border-color 100ms ease-in-out;
 }
 
+.table.selected {
+    border-color: blue;
+}
+
 .table:hover {
     border-color: blue;
 }
