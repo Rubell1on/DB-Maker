@@ -162,10 +162,11 @@ function RelationsDrawer() {
         t.htmlElement.removeEventListener('mouseleave', onMouseLeave);
       }
     }
+    /* eslint-disable */
   },[db]);
+  /* eslint-enable */
 
   function onMouseEnter(e: globalThis.MouseEvent) {
-    console.log('RD.onMouseEnter');
     const tableId = (e.target as HTMLDivElement).id;
 
     const elements = htmlElementsToHighlight.get(tableId);
@@ -182,7 +183,6 @@ function RelationsDrawer() {
   }
 
   function onMouseLeave(e: globalThis.MouseEvent) {
-    console.log('RD.onMouseLeave');
     const tableId = (e.target as HTMLDivElement).id;
 
     const elements = htmlElementsToHighlight.get(tableId);
