@@ -31,12 +31,12 @@ function ContextMenu(props: ContextMenuProps) {
   //   }
   // }, []);
 
-  function onAppClick(e: globalThis.MouseEvent) {
-    console.log('onAppClick')
-    if (!isOpenned) return;
-
-    setIsOpenned(false);
-  }
+  // function onAppClick(e: globalThis.MouseEvent) {
+  //   console.log('onAppClick')
+  //   if (!isOpenned) return;
+  //
+  //   setIsOpenned(false);
+  // }
 
   const [isOpenned, setIsOpenned] = useState(false);
   const [menuPosition, setMenuPosition] = useState(new Vector2());
