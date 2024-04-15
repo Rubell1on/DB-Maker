@@ -30,7 +30,9 @@ function EditorView({editorViewModel}: EditorViewArgs) {
 
     console.log('EditView.useEffect', currentDbId);
     editorViewModel.setCurrentDbId(currentDbId);
+    /* eslint-disable */
   }, [currentDbId])
+  /* eslint-enable */
 
   const {
     currentDb: db,
