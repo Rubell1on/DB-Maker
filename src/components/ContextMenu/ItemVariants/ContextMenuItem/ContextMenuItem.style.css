@@ -1,7 +1,20 @@
 .context-menu__item {
     cursor: pointer;
-    padding: 5px;
+    padding: 5px 7px;
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    align-items: center;
+}
+
+.context-menu__item-name {
+    font-size: 14px;
+}
+
+.context-menu__item-hint {
+    font-size: 11px;
+    color: #5b5b5b;
 }
 
 .context-menu__item:hover {

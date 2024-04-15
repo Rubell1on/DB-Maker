@@ -29,21 +29,22 @@ function useEditorViewModel(
       return;
     }
 
-    setCurrentDb(db)
+    setCurrentDb(db);
   }, [currentDbId, dbModel.dbs]);
 
   const [selectedTables, setSelectedTables] = useState<TableDTO[]>([]);
   const [editingTable, setEditingTable] = useState(false);
+
   const isAllowedToSaveFile = useMemo(() => !fileHook.fileHandler, [fileHook.fileHandler]);
 
 
-  function createTable() {
+  function createTable(position: Vector2) {
     const tables = [
       ...currentDb.tables, {
         id: uuid(),
         name: 'Таблица',
         description: '',
-        position: new Vector2(),
+        position,
         columns: [],
         relations: []
       }

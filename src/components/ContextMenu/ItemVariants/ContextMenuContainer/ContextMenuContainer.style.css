@@ -1,7 +1,9 @@
 .context-menu__container {
     display: flex;
     flex-direction: row;
+    font-size: 15px;
 }
+
 .context-container__name {
     display: flex;
     flex-direction: row;
@@ -10,6 +12,7 @@
     cursor: pointer;
     border-radius: 5px;
     width: -webkit-fill-available;
+    font-size: 14px
 }
 
 .context-container__name:hover {
@@ -18,9 +21,10 @@
 
 .context-container__wrapper {
     position: absolute;
-    transform: translateX(100%);
+    transform: translate(100%, -5px);
     right: 5px;
     padding: 5px;
-    background: lightgray;
+    background: white;
     border-radius: 5px;
+    box-shadow: 4px 4px 5px #00000017;
 }

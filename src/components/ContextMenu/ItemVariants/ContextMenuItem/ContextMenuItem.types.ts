@@ -5,6 +5,7 @@ export interface ContextMenuItemProps {
   name: string;
   disabled?: boolean
   onClick?: MouseEventHandler<HTMLDivElement>;
+  hint?: string;
 }
 
 export interface ContextMenuSeparatorProps {

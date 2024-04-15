@@ -11,6 +11,7 @@
     overflow: hidden;
     user-select: none;
     transition: border-color 100ms ease-in-out;
+    box-shadow: 4px 4px 5px #00000017;
 }
 
 .table.selected {

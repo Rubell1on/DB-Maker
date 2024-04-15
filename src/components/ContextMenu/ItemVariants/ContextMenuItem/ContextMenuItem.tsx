@@ -1,7 +1,7 @@
 import './ContextMenuItem.style.css';
 import {ContextMenuElementProps} from "./ContextMenuItem.types";
 
-function ContextMenuItem(props: Omit<ContextMenuElementProps & { type: 'menuItem' }, 'type'>) {
+function ContextMenuItem(props: Omit<ContextMenuElementProps & { type: 'item' }, 'type'>) {
   const _onClick = props.disabled
     ? undefined
     : props.onClick;
@@ -14,7 +14,12 @@ function ContextMenuItem(props: Omit<ContextMenuElementProps & { type: 'menuItem
 
   return (
     <div className={className.join(' ')} onClick={_onClick}>
-      {props.name}
+      <div className="context-menu__item-name">{props.name}</div>
+      {
+        props?.hint?.length
+          ? <div className="context-menu__item-hint">{props?.hint}</div>
+          : null
+      }
     </div>
   )
 }

@@ -6,7 +6,7 @@ import ContextMenuList from "./ContextMenuContainer/ContextMenuList";
 function createContextMenuItem(item: ContextMenuElementProps) {
   switch (item.type) {
     case 'item': {
-      return <ContextMenuItem name={item?.name} onClick={item?.onClick} disabled={item?.disabled}/>
+      return <ContextMenuItem name={item?.name} onClick={item?.onClick} disabled={item?.disabled} hint={item?.hint}/>
     }
 
     case 'separator': {

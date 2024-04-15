@@ -8,8 +8,13 @@
     flex-direction: column;
     gap: 5px;
     position: absolute;
-    background: lightgray;
+    background: white;
     padding: 5px;
     border-radius: 5px;
     z-index: 2;
+    box-shadow: 4px 4px 5px #00000017;
+}
+
+.context-menu__body_fixed {
+    transform: translate(-5px, 5px);
 }

@@ -3,7 +3,7 @@ import {ContextMenuElementProps} from "../ContextMenuItem/ContextMenuItem.types"
 import {useState} from "react";
 import createContextMenuItem from "../contextMenuItem.factory";
 
-function ContextMenuList(props: Omit<ContextMenuElementProps & { type: 'container' }, 'type'>) {
+function ContextMenuList(props: Omit<ContextMenuElementProps & { type: 'list' }, 'type'>) {
   const [hovered, setHover] = useState(false);
   return (
     <div className="context-menu__container" onMouseEnter={OnMouseEnter} onMouseLeave={OnMouseLeave}>

@@ -8,7 +8,7 @@ type ContextMenuProps = {
   children?: any,
   contextItems?: ContextMenuElementProps[]
   contextMenuPositionOffset?: Vector2,
-  contextMenuMouseButton: 'LMB' | 'RMB'
+  openMenuMouseButton: 'LMB' | 'RMB'
   position: 'fixed' | 'dynamic'
 }
 
@@ -30,25 +30,31 @@ function ContextMenu(props: ContextMenuProps) {
   //     app.removeEventListener('click', onAppClick);
   //   }
   // }, []);
-  //
-  // function onAppClick() {
-  //   console.log('onAppClick')
-  //   // if (!isOpenned) return;
-  //
-  //   setIsOpenned(false);
-  // }
+
+  function onAppClick(e: globalThis.MouseEvent) {
+    console.log('onAppClick')
+    if (!isOpenned) return;
+
+    setIsOpenned(false);
+  }
 
   const [isOpenned, setIsOpenned] = useState(false);
   const [menuPosition, setMenuPosition] = useState(new Vector2());
+
   const bodyStyle = props.position === 'fixed'
     ? {}
     : {transform: `translate(${menuPosition.x}px, ${menuPosition.y}px)`}
+  const bodyClassName = ['context-menu__body'];
 
-  const _onContextMenu = props.contextMenuMouseButton === 'LMB'
+  if (props.position === 'fixed') {
+    bodyClassName.push('context-menu__body_fixed');
+  }
+
+  const _onContextMenu = props.openMenuMouseButton === 'LMB'
     ? onClick
     : onContextMenu;
 
-  const _onClick = props.contextMenuMouseButton === 'LMB'
+  const _onClick = props.openMenuMouseButton === 'LMB'
     ? onContextMenu
     : onClick;
 
@@ -59,7 +65,7 @@ function ContextMenu(props: ContextMenuProps) {
         {
           isOpenned
             ? <div
-              className="context-menu__body"
+              className={bodyClassName.join(' ')}
               style={bodyStyle}>
               {contextItems?.map(createContextMenuItem)}
             </div>

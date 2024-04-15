@@ -15,9 +15,9 @@
     transform: translate(-50%, -50%);
     background: white;
     z-index: 11;
-    border: 1px solid lightgray;
     border-radius: 7px;
     overflow: hidden;
+    box-shadow: 4px 4px 5px #00000017;
 }
 
 .modal-window__header {
