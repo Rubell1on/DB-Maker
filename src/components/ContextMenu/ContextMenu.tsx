@@ -64,18 +64,23 @@ function ContextMenu(props: ContextMenuProps) {
         {children}
         {
           isOpenned
-            ? <div
-              className={bodyClassName.join(' ')}
-              style={bodyStyle}>
-              {contextItems?.map(createContextMenuItem)}
-            </div>
+            ? <>
+              <div className="context-menu__background" onClick={onClick} onContextMenu={onClick}></div>
+              <div
+                className={bodyClassName.join(' ')}
+                style={bodyStyle}>
+                {contextItems?.map(createContextMenuItem)}
+              </div>
+            </>
             : null
         }
       </>
     </div>
   )
+  function onClick(e: MouseEvent<HTMLDivElement, globalThis.MouseEvent>) {
+    e.stopPropagation();
+    e.preventDefault();
 
-  function onClick() {
     if (!isOpenned) return;
 
     setIsOpenned(false);

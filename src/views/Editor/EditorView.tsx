@@ -80,7 +80,7 @@ function EditorView({editorViewModel}: EditorViewArgs) {
               }
             }]
           }]}>
-            <div className="controls__file">Файл</div>
+            <div className="editor-header__controls controls__file">Файл</div>
           </ContextMenu>
         </div>
         <ContextMenu position="dynamic" openMenuMouseButton="RMB"

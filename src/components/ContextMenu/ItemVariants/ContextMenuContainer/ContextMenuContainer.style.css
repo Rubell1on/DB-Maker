@@ -7,12 +7,11 @@
 .context-container__name {
     display: flex;
     flex-direction: row;
-    padding: 5px;
     justify-content: space-between;
     cursor: pointer;
-    border-radius: 5px;
     width: -webkit-fill-available;
-    font-size: 14px
+    font-size: 14px;
+    padding: 6px 8px;
 }
 
 .context-container__name:hover {
